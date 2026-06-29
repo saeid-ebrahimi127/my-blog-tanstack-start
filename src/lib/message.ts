@@ -21,6 +21,9 @@ export const successMessage = {
   accountVerified: 'حساب کاربری شما تایید شد. خوش آمدید.',
   accountVerificationResent:
     'در صورت وجود این ایمیل ، ایمیل تایید حساب کاربری مجددا برای شما ارسال می گردد.',
+  requestChangePasswordSent:
+    'در صورت وجود این ایمیل ، ایمیل تغییر رمز عبور برای شما ارسال می گردد.',
+  passwordChanged: 'رمز عبور شما تغییر یافت. وارد شوید.',
 }
 
 export type SuccessMessageKeys = keyof typeof successMessage

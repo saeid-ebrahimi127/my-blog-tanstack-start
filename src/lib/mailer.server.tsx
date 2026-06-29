@@ -1,7 +1,8 @@
 import AccountVerification from '#/components/email/account-verification'
+import ChangePassword from '#/components/email/change-password'
+import PasswordChanged from '#/components/email/password-changed'
 import { APP_NAME } from '#/lib/const'
-import { appendFile, mkdir } from 'node:fs/promises'
-import { resolve } from 'node:path'
+import { logAppMessage, logEmailLink } from '#/lib/utils.server'
 import { createTransport } from 'nodemailer'
 import { render } from 'react-email'
 import { serverEnv } from './env.server'
@@ -30,19 +31,6 @@ const getMailer = () => {
 export const mailer = getMailer()
 
 const from = `"${APP_NAME}" <no-reply@${new URL(env.APP_URL).hostname}>`
-
-const logEmailLink = async ({ to, link }: { to: string; link: string }) => {
-  const logDir = resolve(process.cwd(), 'log')
-
-  await mkdir(logDir, { recursive: true })
-
-  const timestamp = new Date().toISOString()
-  const line = `[${timestamp}] to=${to} link=${link}\n`
-
-  await appendFile(resolve(logDir, 'email_link.log'), line, {
-    encoding: 'utf-8',
-  })
-}
 
 const homeURL = env.APP_URL
 
@@ -75,6 +63,79 @@ export const sendAccountVerificationEmail = async ({
   const [html, text] = await Promise.all([
     render(accountVerification),
     render(accountVerification, { plainText: true }),
+  ])
+
+  return mailer.sendMail({
+    from,
+    to: to,
+    subject: title,
+    html,
+    text,
+  })
+}
+
+export const sendChangePasswordEmail = async ({
+  to,
+  name,
+  changePasswordURL,
+}: {
+  to: string
+  name: string
+  changePasswordURL: string
+}) => {
+  if (env.NODE_ENV !== 'production') {
+    await logEmailLink({ to, link: changePasswordURL })
+
+    return
+  }
+
+  const title = 'تغییر رمز عبور'
+
+  const changePassword = (
+    <ChangePassword
+      title={title}
+      name={name}
+      changePasswordURL={changePasswordURL}
+      homeURL={homeURL}
+    />
+  )
+
+  const [html, text] = await Promise.all([
+    render(changePassword),
+    render(changePassword, { plainText: true }),
+  ])
+
+  return mailer.sendMail({
+    from,
+    to: to,
+    subject: title,
+    html,
+    text,
+  })
+}
+
+export const sendPasswordChangedEmail = async ({
+  to,
+  name,
+}: {
+  to: string
+  name: string
+}) => {
+  if (env.NODE_ENV !== 'production') {
+    await logAppMessage({ message: `${to} => password changed.` })
+
+    return
+  }
+
+  const title = 'رمز عبور شما تغییر یافت'
+
+  const passwordChanged = (
+    <PasswordChanged title={title} name={name} homeURL={homeURL} />
+  )
+
+  const [html, text] = await Promise.all([
+    render(passwordChanged),
+    render(passwordChanged, { plainText: true }),
   ])
 
   return mailer.sendMail({

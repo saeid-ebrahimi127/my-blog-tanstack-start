@@ -6,6 +6,7 @@ import {
 } from '#/db/schema'
 import {
   APP_NAME_EN,
+  CHANGE_PASSWORD_EXPIRES_IN_SECONDS,
   EMAIL_VERIFICATION_EXPIRES_IN_SECONDS,
   maxPasswordLength,
   maxUsernameLength,
@@ -13,7 +14,11 @@ import {
   minUsernameLength,
 } from '#/lib/const'
 import { serverEnv } from '#/lib/env.server'
-import { sendAccountVerificationEmail } from '#/lib/mailer.server'
+import {
+  sendAccountVerificationEmail,
+  sendChangePasswordEmail,
+  sendPasswordChangedEmail,
+} from '#/lib/mailer.server'
 import { errorMessageKeys } from '#/lib/message'
 import { redisClient } from '#/lib/redis.server'
 import { usernameZodSchema } from '#/zod-schema/field/username'
@@ -50,6 +55,21 @@ const options = {
     maxPasswordLength,
     autoSignIn: false,
     requireEmailVerification: true,
+    async sendResetPassword(data) {
+      sendChangePasswordEmail({
+        to: data.user.email,
+        name: data.user.name,
+        changePasswordURL: data.url,
+      }).catch(console.error)
+    },
+    resetPasswordTokenExpiresIn: CHANGE_PASSWORD_EXPIRES_IN_SECONDS,
+    revokeSessionsOnPasswordReset: true,
+    async onPasswordReset(data) {
+      sendPasswordChangedEmail({
+        to: data.user.email,
+        name: data.user.name,
+      }).catch(console.error)
+    },
   },
   emailVerification: {
     autoSignInAfterVerification: true,
