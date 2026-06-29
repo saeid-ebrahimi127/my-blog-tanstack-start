@@ -19,6 +19,8 @@ export const successMessage = {
   registerSuccess:
     'ثبت نام انجام شد. پیامی جهت تایید ایمیل برای شما ارسال گردید.',
   emailVerified: 'ایمیل شما تایید شد. خوش آمدید.',
+  verificationResent:
+    'در صورت وجود این ایمیل ، ایمیل تایید برای شما ارسال می گردد.',
 }
 
 export type SuccessMessageKeys = keyof typeof successMessage

@@ -1,6 +1,6 @@
 import EmailVerification from '#/components/email/email-verification'
 import { APP_NAME } from '#/lib/const'
-import { mkdir, writeFile } from 'node:fs/promises'
+import { appendFile, mkdir } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { createTransport } from 'nodemailer'
 import { render } from 'react-email'
@@ -32,18 +32,16 @@ export const mailer = getMailer()
 const from = `"${APP_NAME}" <no-reply@${new URL(env.APP_URL).hostname}>`
 
 const logEmailLink = async ({ to, link }: { to: string; link: string }) => {
-  const path = resolve(process.cwd(), 'log')
+  const logDir = resolve(process.cwd(), 'log')
 
-  await mkdir(path, { recursive: true })
+  await mkdir(logDir, { recursive: true })
 
-  await writeFile(
-    resolve(path, 'email_link.log'),
-    JSON.stringify({
-      to,
-      link,
-    }),
-    'utf-8',
-  )
+  const timestamp = new Date().toISOString()
+  const line = `[${timestamp}] to=${to} link=${link}\n`
+
+  await appendFile(resolve(logDir, 'email_link.log'), line, {
+    encoding: 'utf-8',
+  })
 }
 
 const homeURL = env.APP_URL
