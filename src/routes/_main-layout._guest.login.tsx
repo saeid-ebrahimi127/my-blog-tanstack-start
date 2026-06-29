@@ -2,6 +2,7 @@ import { LoginForm } from '#/components/form/login'
 import { RegisterForm } from '#/components/form/register'
 import { CardLayout } from '#/components/layout/card'
 import { MainCenteredLayout } from '#/components/layout/main-centered'
+import { Logo } from '#/components/logo'
 import { Button } from '#/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '#/components/ui/tabs'
 import { pageTitle } from '#/lib/head'
@@ -22,6 +23,9 @@ function RouteComponent() {
   return (
     <MainCenteredLayout>
       <div className="mx-auto w-full max-w-sm">
+        <div className="flex-center mb-4">
+          <Logo />
+        </div>
         <Tabs value={tab} onValueChange={setTab}>
           <TabsList>
             <TabsTrigger value="register">ثبت نام</TabsTrigger>
