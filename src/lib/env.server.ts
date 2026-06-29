@@ -12,5 +12,14 @@ export const serverEnv = () =>
         .optional()
         .default('development'),
       REDIS_URL: z.string().url(),
+      SMTP_HOST: z.string().min(1),
+      SMTP_PORT: z.coerce.number().int().positive(),
+      SMTP_SECURE: z
+        .enum(['true', 'false'])
+        .optional()
+        .default('false')
+        .transform((val) => val === 'true'),
+      SMTP_USER: z.string().optional(),
+      SMTP_PASS: z.string().optional(),
     })
     .parse(process.env)

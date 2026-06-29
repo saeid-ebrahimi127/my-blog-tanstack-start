@@ -13,6 +13,7 @@ import {
   minUsernameLength,
 } from '#/lib/const'
 import { serverEnv } from '#/lib/env.server'
+import { sendEmailVerificationMail } from '#/lib/mailer.server'
 import { errorMessageKeys } from '#/lib/message'
 import { redisClient } from '#/lib/redis.server'
 import { usernameZodSchema } from '#/zod-schema/field/username'
@@ -51,10 +52,17 @@ const options = {
     requireEmailVerification: true,
   },
   emailVerification: {
+    autoSignInAfterVerification: true,
     expiresIn: EMAIL_VERIFICATION_EXPIRES_IN_SECONDS,
     sendOnSignUp: true,
     sendOnSignIn: false,
-    async sendVerificationEmail() {},
+    async sendVerificationEmail({ user, url }) {
+      sendEmailVerificationMail({
+        to: user.email,
+        name: user.name,
+        verificationURL: url,
+      }).catch(console.error)
+    },
   },
   plugins: [
     username({

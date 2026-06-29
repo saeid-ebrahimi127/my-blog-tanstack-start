@@ -1,6 +1,8 @@
 import { serverEnv } from '#/lib/env.server'
 import { flushAppRedisKeys } from '#/lib/redis.server'
 import { hashPassword } from 'better-auth/crypto'
+import { rm } from 'node:fs/promises'
+import { resolve } from 'node:path'
 import { db } from '.'
 import { accountTable, userTable, verificationTable } from './schema'
 
@@ -12,6 +14,12 @@ if (env.NODE_ENV === 'production') {
 }
 
 try {
+  console.log('removing log folder...')
+
+  await rm(resolve(process.cwd(), 'log'), { force: true, recursive: true })
+
+  console.log('log folder removed.')
+
   await flushAppRedisKeys()
 
   console.log('wiping tables...')

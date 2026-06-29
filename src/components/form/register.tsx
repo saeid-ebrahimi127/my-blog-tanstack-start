@@ -43,7 +43,7 @@ export const RegisterForm = ({ onSuccess }: { onSuccess: () => void }) => {
         try {
           const { error } = await authClient.signUp.email({
             ...data,
-            callbackURL: '/login',
+            callbackURL: '/login?success=emailVerified',
           })
 
           if (error) {
