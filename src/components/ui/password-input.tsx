@@ -1,31 +1,28 @@
-"use client"
-
-import { Input } from "#/components/ui/input.tsx"
-import { cn } from "#/lib/utils.ts"
-import { EyeIcon, EyeOffIcon } from "lucide-react"
-import {
-  useState,
-  createContext,
-  useContext,
-  type ComponentProps,
-  type ReactNode,
-  type ChangeEvent,
-  useEffect,
-  useDeferredValue,
-  useMemo,
-} from "react"
-import { zxcvbn, zxcvbnOptions } from "@zxcvbn-ts/core"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "#/components/ui/tooltip.tsx"
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
 } from "#/components/ui/input-group.tsx"
+import { Input } from "#/components/ui/input.tsx"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "#/components/ui/tooltip.tsx"
+import { cn } from "#/lib/utils.ts"
+import { ZxcvbnFactory } from "@zxcvbn-ts/core"
+import { EyeIcon, EyeOffIcon } from "lucide-react"
+import {
+  createContext,
+  useContext,
+  useDeferredValue,
+  useEffect,
+  useState,
+  type ChangeEvent,
+  type ComponentProps,
+  type ReactNode,
+} from "react"
 
 const PasswordInputContext = createContext<{ password: string } | null>(null)
 
@@ -52,7 +49,7 @@ export function PasswordInput({
   return (
     <PasswordInputContext value={{ password: currentValue.toString() }}>
       <div className="space-y-3">
-        <InputGroup>
+        <InputGroup className="overflow-hidden">
           <InputGroupInput
             {...props}
             value={value}
@@ -79,18 +76,11 @@ export function PasswordInput({
 }
 
 export function PasswordInputStrengthChecker() {
-  const [optionsLoaded, setOptionsLoaded] = useState(false)
+  const [zxcvbn, setZxcvbn] = useState<InstanceType<typeof ZxcvbnFactory> | null>(null)
   const [errorLoadingOptions, setErrorLoadingOptions] = useState(false)
 
   const { password } = usePasswordInput()
   const deferredPassword = useDeferredValue(password)
-  const strengthResult = useMemo(() => {
-    if (!optionsLoaded || deferredPassword.length === 0) {
-      return { score: 0, feedback: { warning: undefined } } as const
-    }
-
-    return zxcvbn(deferredPassword)
-  }, [optionsLoaded, deferredPassword])
 
   useEffect(() => {
     Promise.all([
@@ -98,25 +88,29 @@ export function PasswordInputStrengthChecker() {
       import("@zxcvbn-ts/language-en"),
     ])
       .then(([common, english]) => {
-        zxcvbnOptions.setOptions({
+        const factory = new ZxcvbnFactory({
           translations: english.translations,
           graphs: common.adjacencyGraphs,
-          maxLength: 50,
           dictionary: {
             ...common.dictionary,
             ...english.dictionary,
           },
         })
-        setOptionsLoaded(true)
+        setZxcvbn(factory)
       })
       .catch(() => setErrorLoadingOptions(true))
   }, [])
 
-  function getLabel() {
-    if (deferredPassword.length === 0) return "Password strength"
-    if (!optionsLoaded) return "Loading strength checker"
+  const hasPassword = deferredPassword.length > 0
+  const result = zxcvbn != null && hasPassword ? zxcvbn.check(deferredPassword) : null
 
-    const score = strengthResult.score
+  const score: 0 | 1 | 2 | 3 | 4 = result?.score ?? 0
+  const warning = result?.feedback.warning
+
+  const label = (() => {
+    if (!hasPassword) return "Password strength"
+    if (zxcvbn == null) return "Loading strength checker"
+
     switch (score) {
       case 0:
       case 1:
@@ -130,9 +124,7 @@ export function PasswordInputStrengthChecker() {
       default:
         throw new Error(`Invalid score: ${score satisfies never}`)
     }
-  }
-
-  const label = getLabel()
+  })()
 
   if (errorLoadingOptions) return null
 
@@ -141,29 +133,28 @@ export function PasswordInputStrengthChecker() {
       <div
         role="progressbar"
         aria-label="Password Strength"
-        aria-valuenow={strengthResult.score}
+        aria-valuenow={score}
         aria-valuemin={0}
         aria-valuemax={4}
         aria-valuetext={label}
         className="flex gap-1"
       >
         {Array.from({ length: 4 }).map((_, i) => {
-          const color =
-            strengthResult.score >= 3 ? "bg-primary" : "bg-destructive"
+          const color = score >= 3 ? "bg-primary" : "bg-destructive"
 
           return (
             <div
               key={i}
               className={cn(
                 "h-1 flex-1 rounded-full",
-                strengthResult.score > i ? color : "bg-secondary",
+                score > i ? color : "bg-secondary",
               )}
             />
           )
         })}
       </div>
       <div className="flex justify-end text-sm text-muted-foreground">
-        {strengthResult.feedback.warning == null ? (
+        {warning == null ? (
           label
         ) : (
           <Tooltip>
@@ -171,7 +162,7 @@ export function PasswordInputStrengthChecker() {
               {label}
             </TooltipTrigger>
             <TooltipContent side="bottom" sideOffset={4} className="text-base">
-              {strengthResult.feedback.warning}
+              {warning}
             </TooltipContent>
           </Tooltip>
         )}
