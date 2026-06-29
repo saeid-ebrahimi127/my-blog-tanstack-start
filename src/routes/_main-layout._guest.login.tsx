@@ -20,6 +20,15 @@ export const Route = createFileRoute('/_main-layout/_guest/login')({
 function RouteComponent() {
   const [tab, setTab] = useState('login')
 
+  const backToHome = (
+    <Button type="button" asChild className="mt-6 w-full" variant="outline">
+      <Link to="/">
+        <ChevronLeftIcon />
+        بازگشت به خانه
+      </Link>
+    </Button>
+  )
+
   return (
     <MainCenteredLayout>
       <div className="mx-auto w-full max-w-sm">
@@ -37,6 +46,7 @@ function RouteComponent() {
               description="برای ثبت نام تمامی موارد زیر الزامی است."
             >
               <RegisterForm onSuccess={() => setTab('login')} />
+              {backToHome}
             </CardLayout>
           </TabsContent>
           <TabsContent value="login">
@@ -45,15 +55,10 @@ function RouteComponent() {
               description="برای ورود ایمیل و رمز عبور خود را وارد کنید."
             >
               <LoginForm />
+              {backToHome}
             </CardLayout>
           </TabsContent>
         </Tabs>
-        <Button type="button" asChild className="mt-6 w-full" variant="outline">
-          <Link to="/">
-            <ChevronLeftIcon />
-            بازگشت به خانه
-          </Link>
-        </Button>
       </div>
     </MainCenteredLayout>
   )

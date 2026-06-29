@@ -21,6 +21,15 @@ export const Route = createFileRoute(
 })
 
 function RouteComponent() {
+  const backToLogin = (
+    <Button type="button" asChild className="mt-6 w-full" variant="outline">
+      <Link to="/login">
+        <ChevronLeftIcon />
+        بازگشت به صفحه ی ورود
+      </Link>
+    </Button>
+  )
+
   return (
     <MainCenteredLayout>
       <div className="mx-auto w-full max-w-sm">
@@ -29,13 +38,8 @@ function RouteComponent() {
         </div>
         <CardLayout title={title} description="ایمیل خود را وارد نمایید.">
           <ResendVerificationForm />
+          {backToLogin}
         </CardLayout>
-        <Button type="button" asChild className="mt-6 w-full" variant="outline">
-          <Link to="/login">
-            <ChevronLeftIcon />
-            بازگشت به صفحه ی ورود
-          </Link>
-        </Button>
       </div>
     </MainCenteredLayout>
   )

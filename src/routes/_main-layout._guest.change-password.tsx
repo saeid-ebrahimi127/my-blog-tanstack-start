@@ -24,6 +24,15 @@ export const Route = createFileRoute('/_main-layout/_guest/change-password')({
 function RouteComponent() {
   const { token } = Route.useSearch()
 
+  const backToLogin = (
+    <Button type="button" asChild className="mt-6 w-full" variant="outline">
+      <Link to="/login">
+        <ChevronLeftIcon />
+        بازگشت به صفحه ی ورود
+      </Link>
+    </Button>
+  )
+
   return (
     <MainCenteredLayout>
       <div className="mx-auto w-full max-w-sm">
@@ -32,13 +41,8 @@ function RouteComponent() {
         </div>
         <CardLayout title={title} description="رمز عبور جدید خود را وارد کنید.">
           <ChangePasswordForm token={token} />
+          {backToLogin}
         </CardLayout>
-        <Button type="button" asChild className="mt-6 w-full" variant="outline">
-          <Link to="/login">
-            <ChevronLeftIcon />
-            بازگشت به صفحه ی ورود
-          </Link>
-        </Button>
       </div>
     </MainCenteredLayout>
   )

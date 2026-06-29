@@ -17,6 +17,15 @@ export const Route = createFileRoute('/_main-layout/_guest/forgot-password')({
 })
 
 function RouteComponent() {
+  const backToLogin = (
+    <Button type="button" asChild className="mt-6 w-full" variant="outline">
+      <Link to="/login">
+        <ChevronLeftIcon />
+        بازگشت به صفحه ی ورود
+      </Link>
+    </Button>
+  )
+
   return (
     <MainCenteredLayout>
       <div className="mx-auto w-full max-w-sm">
@@ -28,13 +37,8 @@ function RouteComponent() {
           description="ایمیل خود را وارد کنید تا ایمیل تغییر رمز عبور برای شما ارسال گردد."
         >
           <ForgotPasswordForm />
+          {backToLogin}
         </CardLayout>
-        <Button type="button" asChild className="mt-6 w-full" variant="outline">
-          <Link to="/login">
-            <ChevronLeftIcon />
-            بازگشت به صفحه ی ورود
-          </Link>
-        </Button>
       </div>
     </MainCenteredLayout>
   )

@@ -50,7 +50,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className="w-full overflow-x-hidden font-sans antialiased">
+      <body className="w-full overflow-x-hidden bg-sky-50 font-sans antialiased">
         <DirectionProvider dir="rtl">
           <TooltipProvider>{children}</TooltipProvider>
           <Toaster
