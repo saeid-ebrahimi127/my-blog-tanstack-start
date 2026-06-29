@@ -19,7 +19,12 @@ try {
 
   const [newUser] = await db
     .insert(userTable)
-    .values({ name: 'سعید', email: 'saeid@example.com', emailVerified: true })
+    .values({
+      name: 'سعید',
+      email: 'saeid@example.com',
+      emailVerified: true,
+      username: 'saeid123',
+    })
     .returning()
 
   await db.insert(accountTable).values({

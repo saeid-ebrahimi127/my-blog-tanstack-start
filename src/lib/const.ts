@@ -7,3 +7,6 @@ export const maxPasswordLength = 50
 export const EMAIL_VERIFICATION_EXPIRES_IN_MINUTES = 30
 export const EMAIL_VERIFICATION_EXPIRES_IN_SECONDS =
   EMAIL_VERIFICATION_EXPIRES_IN_MINUTES * 60
+
+export const minUsernameLength = 3
+export const maxUsernameLength = 20

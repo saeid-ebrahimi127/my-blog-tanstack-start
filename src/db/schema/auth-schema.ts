@@ -24,6 +24,7 @@ export const userTable = pgTable('user', {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
   deletedAt: timestamp('deleted_at', { withTimezone: true }),
+  username: text('username').notNull().unique(),
 })
 
 export const sessionTable = pgTable(

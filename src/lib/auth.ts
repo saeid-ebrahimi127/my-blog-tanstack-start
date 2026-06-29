@@ -8,19 +8,27 @@ import {
   APP_NAME_EN,
   EMAIL_VERIFICATION_EXPIRES_IN_SECONDS,
   maxPasswordLength,
+  maxUsernameLength,
   minPasswordLength,
+  minUsernameLength,
 } from '#/lib/const'
 import { serverEnv } from '#/lib/env.server'
 import { errorMessageKeys } from '#/lib/message'
+import { usernameZodSchema } from '#/zod-schema/field/username'
 import { db } from '@/db'
 import { betterAuth } from 'better-auth'
+import type { BetterAuthOptions } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { APIError, createAuthMiddleware } from 'better-auth/api'
+import { customSession, username } from 'better-auth/plugins'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
+import { customAlphabet } from 'nanoid'
+
+const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789-_', 15)
 
 const env = serverEnv()
 
-export const auth = betterAuth({
+const options = {
   appName: APP_NAME_EN,
   baseURL: env.BETTER_AUTH_URL,
   secret: env.BETTER_AUTH_SECRET,
@@ -46,7 +54,15 @@ export const auth = betterAuth({
     sendOnSignIn: false,
     async sendVerificationEmail() {},
   },
-  plugins: [tanstackStartCookies()],
+  plugins: [
+    username({
+      minUsernameLength,
+      maxUsernameLength,
+      usernameValidator(value) {
+        return usernameZodSchema.safeParse(value).success
+      },
+    }),
+  ],
   advanced: {
     database: {
       generateId: false,
@@ -76,4 +92,25 @@ export const auth = betterAuth({
       }
     }),
   },
+  databaseHooks: {
+    user: {
+      create: {
+        async before(user) {
+          return { data: { ...user, username: `user_${nanoid()}` } }
+        },
+      },
+    },
+  },
+} satisfies BetterAuthOptions
+
+export const auth = betterAuth({
+  ...options,
+  plugins: [
+    ...options.plugins,
+    customSession(async ({ user, session }) => {
+      const { displayUsername: _, username, ...userRest } = user
+      return { user: { ...userRest, username: username as string }, session }
+    }, options),
+    tanstackStartCookies(),
+  ],
 })
