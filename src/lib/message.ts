@@ -4,7 +4,7 @@ export const errorMessage = {
   INVALID_EMAIL_OR_PASSWORD: 'ایمیل یا رمز عبور اشتباه است.',
   generic: 'خطایی رخ داده!',
   EMAIL_EXISTS: 'ایمیل مورد نظر قبلا استفاده شده است.',
-  EMAIL_NOT_VERIFIED: 'ایمیل شما تایید نشده است.',
+  EMAIL_NOT_VERIFIED: 'حساب کاربری شما تایید نشده است.',
   INVALID_TOKEN: 'توکن اشتباه بوده یا منقضی شده است. دوباره درخواست لینک کنید.',
 }
 
@@ -17,10 +17,10 @@ export const errorMessageKeys = Object.keys(
 export const successMessage = {
   loginSuccess: 'شما وارد شدید.',
   registerSuccess:
-    'ثبت نام انجام شد. پیامی جهت تایید ایمیل برای شما ارسال گردید.',
-  emailVerified: 'ایمیل شما تایید شد. خوش آمدید.',
-  verificationResent:
-    'در صورت وجود این ایمیل ، ایمیل تایید برای شما ارسال می گردد.',
+    'ثبت نام انجام شد. ایمیل تایید حساب کاربری برای شما ارسال گردید.',
+  accountVerified: 'حساب کاربری شما تایید شد. خوش آمدید.',
+  accountVerificationResent:
+    'در صورت وجود این ایمیل ، ایمیل تایید حساب کاربری مجددا برای شما ارسال می گردد.',
 }
 
 export type SuccessMessageKeys = keyof typeof successMessage

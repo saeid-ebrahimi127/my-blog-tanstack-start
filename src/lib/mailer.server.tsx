@@ -1,4 +1,4 @@
-import EmailVerification from '#/components/email/email-verification'
+import AccountVerification from '#/components/email/account-verification'
 import { APP_NAME } from '#/lib/const'
 import { appendFile, mkdir } from 'node:fs/promises'
 import { resolve } from 'node:path'
@@ -46,7 +46,7 @@ const logEmailLink = async ({ to, link }: { to: string; link: string }) => {
 
 const homeURL = env.APP_URL
 
-export const sendEmailVerificationMail = async ({
+export const sendAccountVerificationEmail = async ({
   to,
   name,
   verificationURL,
@@ -61,10 +61,10 @@ export const sendEmailVerificationMail = async ({
     return
   }
 
-  const title = 'تایید ایمیل'
+  const title = 'تایید حساب کاربری'
 
-  const emailVerification = (
-    <EmailVerification
+  const accountVerification = (
+    <AccountVerification
       title={title}
       name={name}
       verificationURL={verificationURL}
@@ -73,8 +73,8 @@ export const sendEmailVerificationMail = async ({
   )
 
   const [html, text] = await Promise.all([
-    render(emailVerification),
-    render(emailVerification, { plainText: true }),
+    render(accountVerification),
+    render(accountVerification, { plainText: true }),
   ])
 
   return mailer.sendMail({

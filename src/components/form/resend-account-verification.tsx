@@ -40,7 +40,7 @@ export const ResendVerificationForm = () => {
         try {
           const { error } = await authClient.sendVerificationEmail({
             ...data,
-            callbackURL: '/login?success=emailVerified',
+            callbackURL: '/login?success=accountVerified',
           })
 
           if (error) {
@@ -53,7 +53,7 @@ export const ResendVerificationForm = () => {
 
           await navigate({ to: '/login' })
 
-          toast.success(successMessage['verificationResent'])
+          toast.success(successMessage['accountVerificationResent'])
         } catch {
           toast.error(errorMessage['generic'])
         }

@@ -1,4 +1,4 @@
-import { ResendVerificationForm } from '#/components/form/resend-verification'
+import { ResendVerificationForm } from '#/components/form/resend-account-verification'
 import { CardLayout } from '#/components/layout/card'
 import { MainCenteredLayout } from '#/components/layout/main-centered'
 import { Logo } from '#/components/logo'
@@ -7,12 +7,16 @@ import { pageTitle } from '#/lib/head'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ChevronLeftIcon } from 'lucide-react'
 
+const title = 'ارسال مجدد ایمیل تایید حساب کاربری'
+
 export const Route = createFileRoute(
-  '/_main-layout/_guest/resend-verification',
+  '/_main-layout/_guest/resend-account-verification',
 )({
   component: RouteComponent,
   head() {
-    return { meta: [{ title: pageTitle('ارسال مجدد ایمیل تایید') }] }
+    return {
+      meta: [{ title: pageTitle(title) }],
+    }
   },
 })
 
@@ -23,10 +27,7 @@ function RouteComponent() {
         <div className="flex-center mb-4">
           <Logo />
         </div>
-        <CardLayout
-          title="ارسال مجدد ایمیل تایید"
-          description="ایمیل خود را وارد نمایید."
-        >
+        <CardLayout title={title} description="ایمیل خود را وارد نمایید.">
           <ResendVerificationForm />
         </CardLayout>
         <Button type="button" asChild className="mt-6 w-full" variant="outline">

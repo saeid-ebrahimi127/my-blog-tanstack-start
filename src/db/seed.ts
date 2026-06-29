@@ -28,24 +28,42 @@ try {
 
   console.log('tables wiped.')
 
-  const [newUser] = await db
+  const [saeid, dave] = await db
     .insert(userTable)
-    .values({
-      name: 'سعید',
-      email: 'saeid@example.com',
-      emailVerified: true,
-      username: 'saeid123',
-    })
+    .values([
+      {
+        name: 'سعید',
+        email: 'saeid@example.com',
+        emailVerified: true,
+        username: 'saeid123',
+      },
+      {
+        name: 'dave',
+        email: 'dave@example.com',
+        emailVerified: false,
+        username: 'dave123',
+      },
+    ])
     .returning()
 
-  await db.insert(accountTable).values({
-    accountId: newUser.id,
-    userId: newUser.id,
-    providerId: 'credential',
-    password: await hashPassword('password123456'),
-  })
+  const password = await hashPassword('password123456')
 
-  console.log('seed user:', newUser)
+  await db.insert(accountTable).values([
+    {
+      accountId: saeid.id,
+      userId: saeid.id,
+      providerId: 'credential',
+      password,
+    },
+    {
+      accountId: dave.id,
+      userId: dave.id,
+      providerId: 'credential',
+      password,
+    },
+  ])
+
+  console.log('seed users:', await db.query.userTable.findMany())
 
   process.exit(0)
 } catch (e) {

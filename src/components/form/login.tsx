@@ -81,10 +81,10 @@ export const LoginForm = () => {
           label="مرا به یاد آور؟"
         />
         <Link
-          to="/resend-verification"
+          to="/resend-account-verification"
           className="underline underline-offset-6"
         >
-          ارسال مجدد ایمیل تایید
+          ارسال مجدد ایمیل تایید حساب کاربری
         </Link>
         <SubmitBtn disabled={isSubmitting}>ورود</SubmitBtn>
       </FieldGroup>

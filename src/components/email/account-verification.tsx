@@ -13,7 +13,7 @@ import {
   Text,
 } from 'react-email'
 
-export default function EmailVerification({
+export default function AccountVerification({
   title,
   name,
   verificationURL,
@@ -51,7 +51,7 @@ export default function EmailVerification({
               {title}
             </Heading>
             <Text className="text-base font-medium">سلام {name} 👋</Text>
-            <Text>برای تایید ایمیل خود از لینک زیر استفاده نمایید.</Text>
+            <Text>برای تایید حساب کاربری خود روی دکمه ی زیر کلیک کنید.</Text>
             <div className="text-center">
               <Link
                 href={verificationURL}
