@@ -14,10 +14,12 @@ import {
 } from '#/lib/const'
 import { serverEnv } from '#/lib/env.server'
 import { errorMessageKeys } from '#/lib/message'
+import { redisClient } from '#/lib/redis.server'
 import { usernameZodSchema } from '#/zod-schema/field/username'
 import { db } from '@/db'
-import { betterAuth } from 'better-auth'
+import { redisStorage } from '@better-auth/redis-storage'
 import type { BetterAuthOptions } from 'better-auth'
+import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { APIError, createAuthMiddleware } from 'better-auth/api'
 import { customSession, username } from 'better-auth/plugins'
@@ -100,6 +102,15 @@ const options = {
         },
       },
     },
+  },
+  secondaryStorage: redisStorage({
+    client: redisClient,
+    keyPrefix: 'better-auth:',
+  }),
+  verification: {
+    disableCleanup: false,
+    storeIdentifier: 'hashed',
+    storeInDatabase: false,
   },
 } satisfies BetterAuthOptions
 

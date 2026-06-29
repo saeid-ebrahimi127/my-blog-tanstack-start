@@ -1,4 +1,5 @@
 import { serverEnv } from '#/lib/env.server'
+import { flushAppRedisKeys } from '#/lib/redis.server'
 import { hashPassword } from 'better-auth/crypto'
 import { db } from '.'
 import { accountTable, userTable, verificationTable } from './schema'
@@ -11,6 +12,8 @@ if (env.NODE_ENV === 'production') {
 }
 
 try {
+  await flushAppRedisKeys()
+
   console.log('wiping tables...')
 
   await Promise.all([db.delete(verificationTable), db.delete(userTable)])
