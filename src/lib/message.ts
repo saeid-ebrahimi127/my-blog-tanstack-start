@@ -24,6 +24,7 @@ export const successMessage = {
   requestChangePasswordSent:
     'در صورت وجود این ایمیل ، ایمیل تغییر رمز عبور برای شما ارسال می گردد.',
   passwordChanged: 'رمز عبور شما تغییر یافت. وارد شوید.',
+  logoutSuccess: 'شما خارج شدید.',
 }
 
 export type SuccessMessageKeys = keyof typeof successMessage
