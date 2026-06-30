@@ -21,7 +21,7 @@ function RouteComponent() {
       </div>
       <div className="p-4">
         <Tabs defaultValue="public-info">
-          <TabsList>
+          <TabsList className="h-full! flex-wrap">
             <TabsTrigger value="public-info">اطلاعات عمومی</TabsTrigger>
             <TabsTrigger value="user-avatar">تصویر کاربری</TabsTrigger>
             <TabsTrigger value="change-password">تغییر رمز عبور</TabsTrigger>
