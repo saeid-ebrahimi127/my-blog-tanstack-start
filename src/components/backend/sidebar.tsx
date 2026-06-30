@@ -8,6 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '#/components/ui/tooltip'
+import { useMediaQuery } from '#/hooks/use-media-query'
 import { cn } from '#/lib/utils'
 import { PanelRightIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -15,7 +16,7 @@ import { useEffect, useState } from 'react'
 const STORAGE_KEY = 'backend-sidebar-open'
 
 export const BackendSidebar = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(() => {
+  const [sidebarOpenState, setSidebarStateOpen] = useState(() => {
     const backendSidebarOpen = localStorage.getItem(STORAGE_KEY)
     return !backendSidebarOpen
       ? true
@@ -24,9 +25,13 @@ export const BackendSidebar = () => {
         : backendSidebarOpen === 'true'
   })
 
+  const isBelowMd = useMediaQuery('(max-width: 768px)')
+
+  const sidebarOpen = isBelowMd ? false : sidebarOpenState
+
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, sidebarOpen ? 'true' : 'false')
-  }, [sidebarOpen])
+    localStorage.setItem(STORAGE_KEY, sidebarOpenState ? 'true' : 'false')
+  }, [sidebarOpenState])
 
   return (
     <div
@@ -38,30 +43,32 @@ export const BackendSidebar = () => {
         },
       )}
     >
-      <div className="mt-4 flex items-center justify-between px-4">
-        <div
-          className={cn({
-            hidden: !sidebarOpen,
-          })}
-        >
-          <Logo iconClassName="size-4" appNameClassName="text-lg" />
+      {!isBelowMd && (
+        <div className="mt-4 flex items-center justify-between px-4">
+          <div
+            className={cn({
+              hidden: !sidebarOpen,
+            })}
+          >
+            <Logo iconClassName="size-4" appNameClassName="text-lg" />
+          </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={() => setSidebarStateOpen((prev) => !prev)}
+              >
+                <PanelRightIcon />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="left">
+              {sidebarOpen ? 'بستن پنل' : 'باز کردن پنل'}
+            </TooltipContent>
+          </Tooltip>
         </div>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={() => setSidebarOpen((prev) => !prev)}
-            >
-              <PanelRightIcon />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="left">
-            {sidebarOpen ? 'بستن پنل' : 'باز کردن پنل'}
-          </TooltipContent>
-        </Tooltip>
-      </div>
+      )}
       <BackendUserInfo sidebarOpen={sidebarOpen} />
       <div className="w-full px-4">
         <Separator className="mt-4" />
