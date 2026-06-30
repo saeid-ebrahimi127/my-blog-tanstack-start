@@ -121,6 +121,20 @@ const options = {
         })
       }
     }),
+    after: createAuthMiddleware(async (ctx) => {
+      if (ctx.path !== '/change-password') return
+
+      if (ctx.context.returned instanceof APIError) return
+
+      const user = ctx.context.session?.user
+
+      if (!user) return
+
+      sendPasswordChangedEmail({
+        to: user.email,
+        name: user.name,
+      }).catch(console.error)
+    }),
   },
   databaseHooks: {
     user: {

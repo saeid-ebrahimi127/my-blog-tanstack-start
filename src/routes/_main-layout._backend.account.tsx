@@ -1,3 +1,4 @@
+import { AccountChangePassword } from '#/components/backend/account/change-password'
 import { AccountPublicInfo } from '#/components/backend/account/public-info'
 import { AccountUserAvatar } from '#/components/backend/account/user-avatar'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '#/components/ui/tabs'
@@ -22,12 +23,16 @@ function RouteComponent() {
           <TabsList>
             <TabsTrigger value="public-info">اطلاعات عمومی</TabsTrigger>
             <TabsTrigger value="user-avatar">تصویر کاربری</TabsTrigger>
+            <TabsTrigger value="change-password">تغییر رمز عبور</TabsTrigger>
           </TabsList>
           <TabsContent value="public-info">
             <AccountPublicInfo />
           </TabsContent>
           <TabsContent value="user-avatar">
             <AccountUserAvatar />
+          </TabsContent>
+          <TabsContent value="change-password">
+            <AccountChangePassword />
           </TabsContent>
         </Tabs>
       </div>

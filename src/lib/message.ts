@@ -9,6 +9,8 @@ export const errorMessage = {
   USERNAME_IS_ALREADY_TAKEN: 'نام کاربری مورد نظر قبلا استفاده شده است.',
   fileNameInvalid: 'نام فایل نامعتبر است.',
   requestCancelled: 'درخواست کنسل شد.',
+  newPasswordUnchanged: 'رمز عبور جدید باید متفاوت از فعلی باشد.',
+  INVALID_PASSWORD: 'رمز عبور فعلی اشتباه است.',
 }
 
 export type ErrorMessageKeys = keyof typeof errorMessage
@@ -31,6 +33,7 @@ export const successMessage = {
   changesSaved: 'تغییرات ذخیره شد.',
   avatarSaved: 'تصویر کاربری شما ذخیره شد.',
   avatarDeleted: 'تصویر کاربری شما حذف شد.',
+  accountPasswordChanged: 'رمز عبور شما تغییر یافت.',
 }
 
 export type SuccessMessageKeys = keyof typeof successMessage
