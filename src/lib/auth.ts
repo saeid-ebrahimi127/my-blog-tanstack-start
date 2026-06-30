@@ -140,6 +140,7 @@ const options = {
     storeIdentifier: 'hashed',
     storeInDatabase: false,
   },
+  rateLimit: { enabled: false },
 } satisfies BetterAuthOptions
 
 export const auth = betterAuth({
