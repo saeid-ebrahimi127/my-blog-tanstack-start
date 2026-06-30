@@ -1,4 +1,5 @@
 import { AccountPublicInfo } from '#/components/backend/account/public-info'
+import { AccountUserAvatar } from '#/components/backend/account/user-avatar'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '#/components/ui/tabs'
 import { pageTitle } from '#/lib/head'
 import { createFileRoute } from '@tanstack/react-router'
@@ -20,9 +21,13 @@ function RouteComponent() {
         <Tabs defaultValue="public-info">
           <TabsList>
             <TabsTrigger value="public-info">اطلاعات عمومی</TabsTrigger>
+            <TabsTrigger value="user-avatar">تصویر کاربری</TabsTrigger>
           </TabsList>
           <TabsContent value="public-info">
             <AccountPublicInfo />
+          </TabsContent>
+          <TabsContent value="user-avatar">
+            <AccountUserAvatar />
           </TabsContent>
         </Tabs>
       </div>

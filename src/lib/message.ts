@@ -7,6 +7,8 @@ export const errorMessage = {
   EMAIL_NOT_VERIFIED: 'حساب کاربری شما تایید نشده است.',
   INVALID_TOKEN: 'توکن اشتباه بوده یا منقضی شده است. دوباره درخواست لینک کنید.',
   USERNAME_IS_ALREADY_TAKEN: 'نام کاربری مورد نظر قبلا استفاده شده است.',
+  fileNameInvalid: 'نام فایل نامعتبر است.',
+  requestCancelled: 'درخواست کنسل شد.',
 }
 
 export type ErrorMessageKeys = keyof typeof errorMessage
@@ -27,6 +29,8 @@ export const successMessage = {
   passwordChanged: 'رمز عبور شما تغییر یافت. وارد شوید.',
   logoutSuccess: 'شما خارج شدید.',
   changesSaved: 'تغییرات ذخیره شد.',
+  avatarSaved: 'تصویر کاربری شما ذخیره شد.',
+  avatarDeleted: 'تصویر کاربری شما حذف شد.',
 }
 
 export type SuccessMessageKeys = keyof typeof successMessage
