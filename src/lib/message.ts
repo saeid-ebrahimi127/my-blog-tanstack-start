@@ -6,6 +6,7 @@ export const errorMessage = {
   EMAIL_EXISTS: 'ایمیل مورد نظر قبلا استفاده شده است.',
   EMAIL_NOT_VERIFIED: 'حساب کاربری شما تایید نشده است.',
   INVALID_TOKEN: 'توکن اشتباه بوده یا منقضی شده است. دوباره درخواست لینک کنید.',
+  USERNAME_IS_ALREADY_TAKEN: 'نام کاربری مورد نظر قبلا استفاده شده است.',
 }
 
 export type ErrorMessageKeys = keyof typeof errorMessage
@@ -25,6 +26,7 @@ export const successMessage = {
     'در صورت وجود این ایمیل ، ایمیل تغییر رمز عبور برای شما ارسال می گردد.',
   passwordChanged: 'رمز عبور شما تغییر یافت. وارد شوید.',
   logoutSuccess: 'شما خارج شدید.',
+  changesSaved: 'تغییرات ذخیره شد.',
 }
 
 export type SuccessMessageKeys = keyof typeof successMessage
