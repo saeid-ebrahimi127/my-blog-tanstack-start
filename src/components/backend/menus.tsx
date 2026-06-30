@@ -8,8 +8,8 @@ import {
 import { useIsPathOrDescendent } from '#/hooks/use-is-path-or-descendent'
 import { useLogout } from '#/hooks/use-logout'
 import { cn } from '#/lib/utils'
-import { Link } from '@tanstack/react-router'
 import type { NavigateOptions } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import {
   FileTextIcon,
   HomeIcon,
@@ -120,7 +120,7 @@ export const BackendMenus = ({ sidebarOpen }: { sidebarOpen: boolean }) => {
       </div>
       <ul className="my-4 space-y-1 px-4">
         <MenuItem
-          to="/"
+          to="/account"
           icon={<UserKeyIcon />}
           text="حساب کاربری"
           sidebarOpen={sidebarOpen}
