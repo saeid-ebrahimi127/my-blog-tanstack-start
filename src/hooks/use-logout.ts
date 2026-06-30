@@ -1,9 +1,11 @@
+import { sessionsQueryKey } from '#/hooks/use-sessions'
 import { authClient } from '#/lib/auth-client'
 import {
   betterAuthToastError,
   errorMessage,
   successMessage,
 } from '#/lib/message'
+import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -12,6 +14,8 @@ export const useLogout = () => {
   const [isPending, setIsPending] = useState(false)
 
   const navigate = useNavigate()
+
+  const queryClient = useQueryClient()
 
   const handler = async () => {
     try {
@@ -24,6 +28,11 @@ export const useLogout = () => {
 
         return
       }
+
+      queryClient.removeQueries({
+        queryKey: sessionsQueryKey,
+        exact: true,
+      })
 
       await navigate({ to: '/login', replace: true })
 
