@@ -1,9 +1,5 @@
+import { CustomAlertDialog } from '#/components/custom-alert-dialog'
 import { Button } from '#/components/ui/button'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '#/components/ui/tooltip'
 import { sessionsQueryKey } from '#/hooks/use-sessions'
 import { authClient } from '#/lib/auth-client'
 import { betterAuthToastError, errorMessage } from '#/lib/message'
@@ -43,16 +39,13 @@ export const DeleteSessionBtn = ({ token }: { token: string }) => {
   })
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
+    <CustomAlertDialog
+      alertDialogTrigger={
         <Button
           type="button"
           disabled={mutation.isPending}
           variant="destructive"
           size="icon"
-          onClick={() => {
-            mutation.mutate({ token })
-          }}
         >
           {mutation.isPending ? (
             <Loader2Icon className="animate-spin" />
@@ -60,8 +53,14 @@ export const DeleteSessionBtn = ({ token }: { token: string }) => {
             <TrashIcon />
           )}
         </Button>
-      </TooltipTrigger>
-      <TooltipContent>حذف</TooltipContent>
-    </Tooltip>
+      }
+      alertDialogActionText="بله"
+      alertDialogDescription="آیا مطمئن هستید می خواهید این نشست را حذف کنید؟"
+      alertDialogActionOnClick={() => {
+        mutation.mutate({ token })
+      }}
+      withTooltip
+      tooltipContent="حذف"
+    />
   )
 }
