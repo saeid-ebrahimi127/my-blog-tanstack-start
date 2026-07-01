@@ -2,7 +2,6 @@ import type { ErrorMessageKeys, SuccessMessageKeys } from '#/lib/message'
 import { errorMessage, successMessage } from '#/lib/message'
 import type { FlashMessage } from '#/lib/session.server'
 import { clearFlashMessage } from '#/serverfn/session'
-import { useNavigate } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'
 import { useEffect, useRef } from 'react'
 import { toast } from 'sonner'
@@ -14,7 +13,6 @@ export const useFlashMessageToast = ({
 }) => {
   const clearFlashMessageFn = useServerFn(clearFlashMessage)
 
-  const navigate = useNavigate()
   const shown = useRef(false)
 
   useEffect(() => {
@@ -39,5 +37,5 @@ export const useFlashMessageToast = ({
     }
 
     clearFlashMessageFn()
-  }, [clearFlashMessageFn, flashMessage, navigate])
+  }, [clearFlashMessageFn, flashMessage])
 }
