@@ -1,5 +1,6 @@
 import { useFolderCtx } from '#/components/media-dialog/body'
 import { FolderCard } from '#/components/media-dialog/folder/folder-card'
+import { FolderListSkeleton } from '#/components/media-dialog/folder/folder-list-skeleton'
 import { useFolders } from '#/hooks/use-folders'
 
 export const FolderList = () => {
@@ -7,7 +8,7 @@ export const FolderList = () => {
 
   const { isPending, isError, data: folders } = useFolders({ parentFolderId })
 
-  if (isPending) return null
+  if (isPending) return <FolderListSkeleton />
 
   if (isError) return null
 

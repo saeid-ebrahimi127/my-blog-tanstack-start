@@ -33,7 +33,7 @@ const FolderProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <FolderCtx value={{ parentFolderId }}>
-      <div className="space-y-4">{children}</div>
+      <div className="space-y-6">{children}</div>
     </FolderCtx>
   )
 }
