@@ -1,7 +1,8 @@
 import { CreateFolderForm } from '#/components/form/folder/create-folder'
 import { FolderList } from '#/components/media-dialog/folder/folder-list'
-import { createContext, use, useState } from 'react'
+import { ReactQueryErrorBoundary } from '#/components/react-query-error-boundary'
 import type { ReactNode } from 'react'
+import { createContext, use, useState } from 'react'
 
 export const MediaDialogBody = () => {
   return (
@@ -15,7 +16,12 @@ const Folders = () => {
   return (
     <FolderProvider>
       <CreateFolderForm />
-      <FolderList />
+      <ReactQueryErrorBoundary
+        errorMessage="خطا در دریافت پوشه ها!"
+        textSize="text-xs"
+      >
+        <FolderList />
+      </ReactQueryErrorBoundary>
     </FolderProvider>
   )
 }
