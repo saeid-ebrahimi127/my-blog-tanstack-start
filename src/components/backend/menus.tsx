@@ -97,7 +97,7 @@ export const BackendMenus = ({ sidebarOpen }: { sidebarOpen: boolean }) => {
           sidebarOpen={sidebarOpen}
         />
         <MenuItem
-          to="/"
+          to="/media"
           icon={<ImageIcon />}
           text="رسانه"
           sidebarOpen={sidebarOpen}
