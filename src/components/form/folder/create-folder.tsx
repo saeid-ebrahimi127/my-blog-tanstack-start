@@ -16,8 +16,6 @@ import { toast } from 'sonner'
 import z from 'zod'
 
 export const CreateFolderForm = () => {
-  const { parentFolderId } = useFolderCtx()
-
   const form = useForm({
     resolver: zodResolver(
       z.object({
@@ -27,23 +25,23 @@ export const CreateFolderForm = () => {
     defaultValues: { name: '' },
   })
 
-  const abortController = useRef<InstanceType<typeof AbortController> | null>(
-    null,
-  )
-
-  useEffect(() => {
-    return () => abortController.current?.abort()
-  }, [])
-
   const {
     handleSubmit,
     control,
     formState: { isSubmitting },
   } = form
 
+  const { parentFolderId } = useFolderCtx()
+
   const createFolderFn = useServerFn(createFolder)
 
   const queryClient = useQueryClient()
+
+  const abortController = useRef(new AbortController())
+
+  useEffect(() => {
+    return () => abortController.current.abort()
+  }, [])
 
   return (
     <form

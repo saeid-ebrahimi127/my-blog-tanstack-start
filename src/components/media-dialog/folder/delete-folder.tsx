@@ -12,19 +12,19 @@ import { toast } from 'sonner'
 export const DeleteFolder = ({ folderId }: { folderId: string }) => {
   const [isPending, setIsPending] = useState(false)
 
-  const abortControllerRef = useRef<InstanceType<
-    typeof AbortController
-  > | null>(null)
-
-  useEffect(() => {
-    return () => abortControllerRef.current?.abort()
-  }, [])
+  const { parentFolderId } = useFolderCtx()
 
   const deleteFolderFn = useServerFn(deleteFolder)
 
-  const { parentFolderId } = useFolderCtx()
-
   const queryClient = useQueryClient()
+
+  const abortControllerRef = useRef(new AbortController())
+
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current.abort()
+    }
+  }, [])
 
   return (
     <DropdownMenuItem
