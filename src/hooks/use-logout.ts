@@ -1,3 +1,4 @@
+import { foldersQueryKeyPrefix } from '#/hooks/use-folders'
 import { sessionsQueryKey } from '#/hooks/use-sessions'
 import { authClient } from '#/lib/auth-client'
 import {
@@ -31,6 +32,11 @@ export const useLogout = () => {
 
       queryClient.removeQueries({
         queryKey: sessionsQueryKey,
+        exact: true,
+      })
+
+      queryClient.removeQueries({
+        queryKey: [foldersQueryKeyPrefix],
         exact: true,
       })
 

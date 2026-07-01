@@ -1,10 +1,13 @@
 import { TextInput } from '#/components/input/input'
+import { useFolderCtx } from '#/components/media-dialog/body'
 import { SubmitBtn } from '#/components/submit-btn'
 import { FieldGroup } from '#/components/ui/field'
+import { foldersQueryKeyPrefix } from '#/hooks/use-folders'
 import { errorMessage } from '#/lib/message'
 import { createFolder } from '#/serverfn/folder'
 import { folderNameZodSchema } from '#/zod-schema/folder/name'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useQueryClient } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
 import { PlusIcon } from 'lucide-react'
 import { useEffect, useRef } from 'react'
@@ -13,6 +16,8 @@ import { toast } from 'sonner'
 import z from 'zod'
 
 export const CreateFolderForm = () => {
+  const { parentFolderId } = useFolderCtx()
+
   const form = useForm({
     resolver: zodResolver(
       z.object({
@@ -38,6 +43,8 @@ export const CreateFolderForm = () => {
 
   const createFolderFn = useServerFn(createFolder)
 
+  const queryClient = useQueryClient()
+
   return (
     <form
       onSubmit={handleSubmit(async (data) => {
@@ -50,6 +57,11 @@ export const CreateFolderForm = () => {
           })
 
           form.reset()
+
+          queryClient.invalidateQueries({
+            queryKey: [foldersQueryKeyPrefix, { parentFolderId }],
+            exact: true,
+          })
 
           toast.success('پوشه ایجاد شد.')
         } catch {
