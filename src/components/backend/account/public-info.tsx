@@ -1,4 +1,4 @@
-import { TextInput } from '#/components/input/input'
+import { TextInput } from '#/components/input/text'
 import { CardLayout } from '#/components/layout/card'
 import { SubmitBtn } from '#/components/submit-btn'
 import { Button } from '#/components/ui/button'

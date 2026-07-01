@@ -1,5 +1,5 @@
 import { CheckboxInput } from '#/components/input/checkbox'
-import { TextInput } from '#/components/input/input'
+import { TextInput } from '#/components/input/text'
 import { SubmitBtn } from '#/components/submit-btn'
 import { FieldGroup } from '#/components/ui/field'
 import { authClient } from '#/lib/auth-client'
