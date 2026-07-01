@@ -1,5 +1,5 @@
 import { getFolders } from '#/serverfn/folder'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
 
 export const foldersQueryKeyPrefix = 'folders'
@@ -11,13 +11,18 @@ export const useFolders = ({
 } = {}) => {
   const getFoldersFn = useServerFn(getFolders)
 
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: [foldersQueryKeyPrefix, { parentFolderId }],
     async queryFn({ signal }) {
-      const folders = await getFoldersFn({ signal, data: { parentFolderId } })
+      const folders = await getFoldersFn({
+        signal,
+        data: { parentFolderId },
+      })
 
       return folders
     },
     staleTime: Infinity,
+    refetchOnMount: true,
+    throwOnError: true,
   })
 }
