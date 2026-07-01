@@ -18,7 +18,8 @@ export const useFlashMessageToast = ({
   const shown = useRef(false)
 
   useEffect(() => {
-    if (shown.current || !flashMessage) return
+    if (!flashMessage || !Object.keys(flashMessage).length || shown.current)
+      return
 
     if (!flashMessage.error && !flashMessage.success) return
 
