@@ -1,3 +1,4 @@
+import { CustomAlertDialog } from '#/components/custom-alert-dialog'
 import { useFolderCtx } from '#/components/media-dialog/body'
 import { DropdownMenuItem } from '#/components/ui/dropdown-menu'
 import { foldersQueryKeyPrefix } from '#/hooks/use-folders'
@@ -40,21 +41,28 @@ export const DeleteFolder = ({ folderId }: { folderId: string }) => {
   })
 
   return (
-    <DropdownMenuItem
-      variant="destructive"
-      disabled={deleteFolderMutation.isPending}
-      onSelect={(e) => {
-        e.preventDefault()
-
+    <CustomAlertDialog
+      alertDialogTrigger={
+        <DropdownMenuItem
+          variant="destructive"
+          disabled={deleteFolderMutation.isPending}
+          onSelect={(e) => {
+            e.preventDefault()
+          }}
+        >
+          {deleteFolderMutation.isPending ? (
+            <Loader2Icon className="animate-spin" />
+          ) : (
+            <TrashIcon />
+          )}
+          {deleteFolderMutation.isPending ? 'در حال حذف کردن...' : 'حذف'}
+        </DropdownMenuItem>
+      }
+      alertDialogActionText="بله"
+      alertDialogDescription="در صورت حدف این پوشه ، تمامی فایل ها و پوشه های داخل آن از بین می روند. ادامه می دهید؟"
+      alertDialogActionOnClick={() => {
         deleteFolderMutation.mutate({ folderId })
       }}
-    >
-      {deleteFolderMutation.isPending ? (
-        <Loader2Icon className="animate-spin" />
-      ) : (
-        <TrashIcon />
-      )}
-      {deleteFolderMutation.isPending ? 'در حال حذف کردن...' : 'حذف'}
-    </DropdownMenuItem>
+    />
   )
 }
