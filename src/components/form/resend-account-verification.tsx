@@ -40,7 +40,7 @@ export const ResendVerificationForm = () => {
         try {
           const { error } = await authClient.sendVerificationEmail({
             ...data,
-            callbackURL: '/login?success=accountVerified',
+            callbackURL: '/login',
           })
 
           if (error) {

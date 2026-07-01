@@ -21,5 +21,6 @@ export const serverEnv = () =>
         .transform((val) => val === 'true'),
       SMTP_USER: z.string().optional(),
       SMTP_PASS: z.string().optional(),
+      SESSION_SECRET: z.string().min(64),
     })
     .parse(process.env)

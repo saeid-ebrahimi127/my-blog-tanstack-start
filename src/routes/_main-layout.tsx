@@ -1,24 +1,19 @@
-import { useSpToast } from '#/hooks/use-sp-toast'
+import { useFlashMessageToast } from '#/hooks/use-flash-message-toast'
 import { getAppBootstrapData } from '#/serverfn/app-bootstrap'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
-import z from 'zod'
 
 export const Route = createFileRoute('/_main-layout')({
   component: RouteComponent,
   async beforeLoad() {
-    const { user } = await getAppBootstrapData()
-    return { user }
+    const { user, flashMessage } = await getAppBootstrapData()
+    return { user, flashMessage }
   },
-  validateSearch: z.object({
-    error: z.string().optional(),
-    success: z.string().optional(),
-  }),
 })
 
 function RouteComponent() {
-  const { error, success } = Route.useSearch()
+  const { flashMessage } = Route.useRouteContext()
 
-  useSpToast({ error, success })
+  useFlashMessageToast({ flashMessage })
 
   return <Outlet />
 }

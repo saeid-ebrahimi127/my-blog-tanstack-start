@@ -21,6 +21,11 @@ import {
 } from '#/lib/mailer.server'
 import { errorMessageKeys } from '#/lib/message'
 import { redisClient } from '#/lib/redis.server'
+import { flashMessage } from '#/lib/session.server'
+import {
+  extractErrorFromRedirect,
+  getCallbackURLFromRequest,
+} from '#/lib/utils.server'
 import { usernameZodSchema } from '#/zod-schema/field/username'
 import { db } from '@/db'
 import { redisStorage } from '@better-auth/redis-storage'
@@ -122,18 +127,41 @@ const options = {
       }
     }),
     after: createAuthMiddleware(async (ctx) => {
-      if (ctx.path !== '/change-password') return
+      if (ctx.path === '/verify-email') {
+        const returned = ctx.context.returned
 
-      if (ctx.context.returned instanceof APIError) return
+        const errorQueryParam = extractErrorFromRedirect(
+          returned,
+          ctx.context.baseURL,
+        )
 
-      const user = ctx.context.session?.user
+        if (errorQueryParam) {
+          await flashMessage({ error: errorQueryParam })
 
-      if (!user) return
+          return
+        }
 
-      sendPasswordChangedEmail({
-        to: user.email,
-        name: user.name,
-      }).catch(console.error)
+        const callbackURLQueryParam = getCallbackURLFromRequest(
+          ctx.request?.url,
+        )
+
+        if (callbackURLQueryParam === '/login') {
+          await flashMessage({ success: 'accountVerified' })
+        }
+      }
+
+      if (ctx.path === '/change-password') {
+        if (ctx.context.returned instanceof APIError) return
+
+        const user = ctx.context.session?.user
+
+        if (!user) return
+
+        sendPasswordChangedEmail({
+          to: user.email,
+          name: user.name,
+        }).catch(console.error)
+      }
     }),
   },
   databaseHooks: {
