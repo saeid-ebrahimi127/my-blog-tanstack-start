@@ -150,6 +150,21 @@ const options = {
         }
       }
 
+      if (ctx.path === '/reset-password/:token') {
+        const returned = ctx.context.returned
+
+        const errorQueryParam = extractErrorFromRedirect(
+          returned,
+          ctx.context.baseURL,
+        )
+
+        if (errorQueryParam) {
+          await flashMessage({ error: errorQueryParam })
+
+          return
+        }
+      }
+
       if (ctx.path === '/change-password') {
         if (ctx.context.returned instanceof APIError) return
 
