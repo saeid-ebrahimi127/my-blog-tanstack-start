@@ -7,8 +7,10 @@ import type { Session } from 'better-auth'
 
 export const SessionCard = ({
   session,
+  sessionsRefetching,
 }: {
   session: Session & { isCurrent: boolean }
+  sessionsRefetching: boolean
 }) => {
   const Icon = getOsIcon(session.userAgent)
 
@@ -35,14 +37,18 @@ export const SessionCard = ({
             {' ، '}
             {new Date(session.createdAt).toLocaleTimeString('fa-IR')}
           </div>
-          <div className="mt-2 sm:hidden">
-            {!session.isCurrent && <DeleteSessionBtn token={session.token} />}
-          </div>
+          {!sessionsRefetching && (
+            <div className="mt-2 sm:hidden">
+              {!session.isCurrent && <DeleteSessionBtn token={session.token} />}
+            </div>
+          )}
         </div>
       </div>
-      <div className="hidden sm:block">
-        {!session.isCurrent && <DeleteSessionBtn token={session.token} />}
-      </div>
+      {!sessionsRefetching && (
+        <div className="hidden sm:block">
+          {!session.isCurrent && <DeleteSessionBtn token={session.token} />}
+        </div>
+      )}
     </div>
   )
 }

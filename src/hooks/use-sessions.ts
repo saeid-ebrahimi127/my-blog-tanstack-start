@@ -1,10 +1,10 @@
 import { authClient } from '#/lib/auth-client'
-import { useSuspenseQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 export const sessionsQueryKey = ['sessions']
 
 export const useSessions = () => {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: sessionsQueryKey,
     async queryFn({ signal }) {
       const [{ data, error }, { data: current }] = await Promise.all([
@@ -20,5 +20,7 @@ export const useSessions = () => {
       }))
     },
     staleTime: Infinity,
+    refetchOnMount: true,
+    throwOnError: true,
   })
 }

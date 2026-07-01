@@ -8,29 +8,16 @@ import { sessionsQueryKey } from '#/hooks/use-sessions'
 import { authClient } from '#/lib/auth-client'
 import { betterAuthToastError, errorMessage } from '#/lib/message'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { TrashIcon } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { Loader2Icon, TrashIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
 export const DeleteSessionBtn = ({ token }: { token: string }) => {
-  const abortControllerRef = useRef<InstanceType<
-    typeof AbortController
-  > | null>(null)
-
   const queryClient = useQueryClient()
 
-  useEffect(() => {
-    return () => abortControllerRef.current?.abort()
-  }, [])
-
   const mutation = useMutation({
-    onMutate() {
-      abortControllerRef.current = new AbortController()
-    },
     mutationFn({ token }: { token: string }) {
       return authClient.revokeSession({
         token,
-        fetchOptions: { signal: abortControllerRef.current?.signal },
       })
     },
     onSuccess(data) {
@@ -48,6 +35,11 @@ export const DeleteSessionBtn = ({ token }: { token: string }) => {
     onError() {
       toast.error(errorMessage['generic'])
     },
+    onSettled(data) {
+      if (data && !data.error) {
+        toast.success('نشست حذف شد.')
+      }
+    },
   })
 
   return (
@@ -59,13 +51,14 @@ export const DeleteSessionBtn = ({ token }: { token: string }) => {
           variant="destructive"
           size="icon"
           onClick={() => {
-            if (!confirm('آیا مطمئن هستید می خواهید این نشست را حذف کنید؟'))
-              return
-
             mutation.mutate({ token })
           }}
         >
-          <TrashIcon />
+          {mutation.isPending ? (
+            <Loader2Icon className="animate-spin" />
+          ) : (
+            <TrashIcon />
+          )}
         </Button>
       </TooltipTrigger>
       <TooltipContent>حذف</TooltipContent>
