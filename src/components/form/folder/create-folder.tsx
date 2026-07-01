@@ -31,8 +31,9 @@ export const CreateFolderForm = () => {
   const queryClient = useQueryClient()
 
   const createFolderMutation = useMutation({
-    mutationFn: (data: { name: string }) => createFolderFn({ data }),
-    onSuccess: () => {
+    mutationFn: (data: { name: string; parentFolderId: string | null }) =>
+      createFolderFn({ data }),
+    onSuccess: (_, { parentFolderId }) => {
       return queryClient.invalidateQueries({
         queryKey: [foldersQueryKeyPrefix, { parentFolderId }],
         exact: true,
@@ -51,7 +52,7 @@ export const CreateFolderForm = () => {
   })
 
   const onSubmitHandler = handleSubmit((data) => {
-    createFolderMutation.mutate(data)
+    createFolderMutation.mutate({ ...data, parentFolderId })
   })
 
   return (

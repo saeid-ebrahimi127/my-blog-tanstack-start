@@ -11,6 +11,7 @@ export const createFolder = createServerFn({ method: 'POST' })
   .validator(
     z.object({
       name: folderNameZodSchema,
+      parentFolderId: z.string().uuid().nullable(),
     }),
   )
   .handler(
@@ -18,12 +19,13 @@ export const createFolder = createServerFn({ method: 'POST' })
       context: {
         user: { id: userId },
       },
-      data: { name: folderName },
+      data: { name: folderName, parentFolderId },
     }) => {
       const [newFolder] = await db
         .insert(folderTable)
         .values({
           name: folderName,
+          parentFolderId,
           userId,
         })
         .returning()
