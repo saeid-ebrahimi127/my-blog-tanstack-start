@@ -27,7 +27,16 @@ export const MediaDialog = () => {
           مدیریت رسانه
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex h-[calc(100vh-4rem)] max-w-[calc(100vw-4rem)]! flex-col gap-0 p-0">
+      <DialogContent
+        onInteractOutside={(e) => {
+          const target = e.target as HTMLElement
+
+          if (target.closest('[data-sonner-toaster]')) {
+            e.preventDefault()
+          }
+        }}
+        className="flex h-[calc(100vh-4rem)] max-w-[calc(100vw-4rem)]! flex-col gap-0 p-0"
+      >
         <DialogHeader className="border-b p-4">
           <DialogTitle className="text-xl">مدیریت رسانه</DialogTitle>
           <DialogDescription>

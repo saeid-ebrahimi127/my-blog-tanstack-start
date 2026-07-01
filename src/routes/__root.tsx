@@ -58,7 +58,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             closeButton
             duration={8000}
             position="top-center"
-            className="font-sans!"
+            className="pointer-events-auto font-sans!"
           />
         </DirectionProvider>
         <TanStackDevtools
