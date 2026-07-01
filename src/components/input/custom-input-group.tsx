@@ -36,9 +36,7 @@ export const CustomInputGroup = <T extends FieldValues>({
                 id={field.name}
                 aria-invalid={fieldState.invalid}
               />
-              <InputGroupAddon align="inline-end">
-                {inputGroupAddon}
-              </InputGroupAddon>
+              <InputGroupAddon>{inputGroupAddon}</InputGroupAddon>
             </InputGroup>
             {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
           </Field>

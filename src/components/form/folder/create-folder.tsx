@@ -7,7 +7,7 @@ import { folderNameZodSchema } from '#/zod-schema/folder/name'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
-import { PlusCircleIcon } from 'lucide-react'
+import { FolderPlusIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import z from 'zod'
@@ -60,10 +60,10 @@ export const CreateFolderForm = () => {
         <CustomInputGroup
           control={control}
           name="name"
-          inputGroupAddon={<PlusCircleIcon />}
+          inputGroupAddon={<FolderPlusIcon />}
           inputGroupInputProps={{
             autoComplete: 'on',
-            placeholder: 'نام پوشه ی جدید...',
+            placeholder: 'نام پوشه ی جدید + Enter',
             disabled: createFolderMutation.isPending,
           }}
         />
