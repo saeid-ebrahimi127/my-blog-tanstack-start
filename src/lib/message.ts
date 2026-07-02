@@ -31,8 +31,6 @@ export const successMessage = {
   passwordChanged: 'رمز عبور شما تغییر یافت. وارد شوید.',
   logoutSuccess: 'شما خارج شدید.',
   changesSaved: 'تغییرات ذخیره شد.',
-  avatarSaved: 'تصویر کاربری شما ذخیره شد.',
-  avatarDeleted: 'تصویر کاربری شما حذف شد.',
   accountPasswordChanged: 'رمز عبور شما تغییر یافت.',
 }
 

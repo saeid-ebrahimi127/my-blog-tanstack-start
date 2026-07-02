@@ -14,14 +14,11 @@ if (env.NODE_ENV === 'production') {
 }
 
 try {
-  console.log('removing log and upload folders...')
+  console.log('removing log folder...')
 
-  await Promise.all([
-    rm(resolve(process.cwd(), 'log'), { force: true, recursive: true }),
-    rm(resolve(process.cwd(), 'upload'), { force: true, recursive: true }),
-  ])
+  await rm(resolve(process.cwd(), 'log'), { force: true, recursive: true })
 
-  console.log('log and upload folders removed.')
+  console.log('log folder removed.')
 
   await flushAppRedisKeys()
 
