@@ -20,14 +20,19 @@ export const useMediaDialogUploader = () => {
   return ctx
 }
 
+const isDuplicate = (a: File, b: File) =>
+  a.name === b.name && a.size === b.size && a.lastModified === b.lastModified
+
 export const MediaDialogUploaderUploader = () => {
   const [selectedFiles, setSelectedFiles] = useState<SelectedFile[]>([])
 
   const selectFilesHandler = (files: File[]) => {
     setSelectedFiles((prevSelectedFiles) => {
-      const uniqueFiles = [...files]
+      const uniqueFiles = files
         .filter((file) =>
-          prevSelectedFiles.every((prevFile) => prevFile.name !== file.name),
+          prevSelectedFiles.every(
+            (prevFile) => !isDuplicate(prevFile.file, file),
+          ),
         )
         .map((file): SelectedFile => ({
           name: file.name,
