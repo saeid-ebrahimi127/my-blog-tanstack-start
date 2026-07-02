@@ -7,7 +7,7 @@ import { useMediaDialogUploader } from '#/components/media-dialog/uploader/media
 import { ReadableFileMimes } from '#/components/media-dialog/uploader/readable-file-mimes'
 import { cn } from '#/lib/utils'
 import { UploadCloudIcon } from 'lucide-react'
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, DragEvent } from 'react'
 import { useRef, useState } from 'react'
 
 export const PickFiles = () => {
@@ -15,12 +15,34 @@ export const PickFiles = () => {
 
   const inputRef = useRef<HTMLInputElement>(null)
 
+  const clearInput = () => {
+    if (inputRef.current) {
+      inputRef.current.value = ''
+    }
+  }
+
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
 
     if (!files?.length) return
 
     selectFilesHandler([...files])
+
+    clearInput()
+  }
+
+  const onDropHandler = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+
+    setIsDragging(false)
+
+    const files = [...e.dataTransfer.files]
+
+    if (!files.length) return
+
+    selectFilesHandler([...files])
+
+    clearInput()
   }
 
   const [isDragging, setIsDragging] = useState(false)
@@ -67,17 +89,7 @@ export const PickFiles = () => {
         onDragOver={(e) => {
           e.preventDefault()
         }}
-        onDrop={(e) => {
-          e.preventDefault()
-
-          setIsDragging(false)
-
-          const files = [...e.dataTransfer.files]
-
-          if (!files.length) return
-
-          selectFilesHandler([...files])
-        }}
+        onDrop={onDropHandler}
       >
         <UploadCloudIcon
           className={cn(
