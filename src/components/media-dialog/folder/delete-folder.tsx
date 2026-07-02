@@ -14,14 +14,13 @@ export const DeleteFolder = ({ folderId }: { folderId: string }) => {
 
   const queryClient = useQueryClient()
 
-  const { parentFolderId, setPath, path } = useFolderCtx()
+  const { pathIds, setPath, path } = useFolderCtx()
 
   const deleteFolderMutation = useMutation({
     mutationFn: (data: { folderId: string }) => deleteFolderFn({ data }),
     onSuccess: ({ error }) => {
       if (error) {
         toast.error(error)
-
         return
       }
 
@@ -31,12 +30,11 @@ export const DeleteFolder = ({ folderId }: { folderId: string }) => {
       }
 
       queryClient.removeQueries({
-        queryKey: [foldersQueryKeyPrefix, { parentFolderId: folderId }],
-        exact: true,
+        queryKey: [foldersQueryKeyPrefix, ...pathIds, folderId],
       })
 
       return queryClient.invalidateQueries({
-        queryKey: [foldersQueryKeyPrefix, { parentFolderId }],
+        queryKey: [foldersQueryKeyPrefix, ...pathIds],
         exact: true,
       })
     },

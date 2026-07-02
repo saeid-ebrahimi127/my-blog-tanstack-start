@@ -14,8 +14,8 @@ import { DropdownMenuItem } from '#/components/ui/dropdown-menu'
 import { FieldGroup } from '#/components/ui/field'
 import { foldersQueryKeyPrefix } from '#/hooks/use-folders'
 import { errorMessage } from '#/lib/message'
-import { updateFolder } from '#/serverfn/folder'
 import type { Folder } from '#/serverfn/folder'
+import { updateFolder } from '#/serverfn/folder'
 import { folderNameZodSchema } from '#/zod-schema/folder/name'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -84,7 +84,7 @@ const UpdateFolderForm = ({
 
   const queryClient = useQueryClient()
 
-  const { setPath } = useFolderCtx()
+  const { setPath, pathIds } = useFolderCtx()
 
   const updateFolderMutation = useMutation({
     mutationFn: (data: { folderId: string; name: string }) =>
@@ -92,7 +92,6 @@ const UpdateFolderForm = ({
     onSuccess: (data, { folderId }) => {
       if (data.error) {
         toast.error(data.error)
-
         return
       }
 
@@ -105,10 +104,8 @@ const UpdateFolderForm = ({
       )
 
       return queryClient.invalidateQueries({
-        queryKey: [
-          foldersQueryKeyPrefix,
-          { parentFolderId: data.updatedFolder.parentFolderId },
-        ],
+        queryKey: [foldersQueryKeyPrefix, ...pathIds],
+        exact: true,
       })
     },
     onError: () => {

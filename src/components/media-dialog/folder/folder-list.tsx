@@ -11,7 +11,7 @@ import { useFolders } from '#/hooks/use-folders'
 import { Loader2Icon, RefreshCwIcon } from 'lucide-react'
 
 export const FolderList = () => {
-  const { parentFolderId } = useFolderCtx()
+  const { pathIds } = useFolderCtx()
 
   const {
     isPending,
@@ -19,7 +19,7 @@ export const FolderList = () => {
     data: folders,
     isRefetching,
     refetch,
-  } = useFolders({ parentFolderId })
+  } = useFolders({ path: pathIds })
 
   if (isPending) return <FolderListSkeleton />
 

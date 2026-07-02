@@ -4,15 +4,12 @@ import { useServerFn } from '@tanstack/react-start'
 
 export const foldersQueryKeyPrefix = 'folders'
 
-export const useFolders = ({
-  parentFolderId = null,
-}: {
-  parentFolderId?: string | null
-} = {}) => {
+export const useFolders = ({ path = [] }: { path?: string[] } = {}) => {
   const getFoldersFn = useServerFn(getFolders)
+  const parentFolderId = path.length > 0 ? path[path.length - 1] : null
 
   return useQuery({
-    queryKey: [foldersQueryKeyPrefix, { parentFolderId }],
+    queryKey: [foldersQueryKeyPrefix, ...path],
     async queryFn({ signal }) {
       const folders = await getFoldersFn({
         signal,

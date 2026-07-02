@@ -24,7 +24,7 @@ export const CreateFolderForm = () => {
 
   const { handleSubmit, control } = form
 
-  const { parentFolderId } = useFolderCtx()
+  const { parentFolderId, pathIds } = useFolderCtx()
 
   const createFolderFn = useServerFn(createFolder)
 
@@ -33,9 +33,9 @@ export const CreateFolderForm = () => {
   const createFolderMutation = useMutation({
     mutationFn: (data: { name: string; parentFolderId: string | null }) =>
       createFolderFn({ data }),
-    onSuccess: (_, { parentFolderId }) => {
+    onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: [foldersQueryKeyPrefix, { parentFolderId }],
+        queryKey: [foldersQueryKeyPrefix, ...pathIds],
         exact: true,
       })
     },

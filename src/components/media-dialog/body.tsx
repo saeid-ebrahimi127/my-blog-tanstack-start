@@ -32,6 +32,7 @@ export type FolderCrumb = { id: string; name: string }
 
 const FolderCtx = createContext<{
   path: FolderCrumb[]
+  pathIds: string[]
   parentFolderId: string | null
   setPath: Dispatch<SetStateAction<FolderCrumb[]>>
   navigateToFolder: (folder: FolderCrumb) => void
@@ -41,6 +42,7 @@ const FolderCtx = createContext<{
 const FolderProvider = ({ children }: { children: ReactNode }) => {
   const [path, setPath] = useState<FolderCrumb[]>([])
 
+  const pathIds = path.map((crumb) => crumb.id)
   const parentFolderId = path.length > 0 ? path[path.length - 1].id : null
 
   const navigateToFolder = (folder: FolderCrumb) => {
@@ -55,6 +57,7 @@ const FolderProvider = ({ children }: { children: ReactNode }) => {
     <FolderCtx
       value={{
         path,
+        pathIds,
         parentFolderId,
         setPath,
         navigateToFolder,
