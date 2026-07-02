@@ -46,11 +46,14 @@ export const getFolders = createServerFn({ method: 'GET' })
       context: {
         user: { id: userId },
       },
+      data: { parentFolderId },
     }) => {
       const folders = await db.query.folderTable.findMany({
         where: and(
           eq(folderTable.userId, userId),
-          isNull(folderTable.parentFolderId),
+          parentFolderId === null
+            ? isNull(folderTable.parentFolderId)
+            : eq(folderTable.parentFolderId, parentFolderId),
         ),
         orderBy: desc(folderTable.createdAt),
       })

@@ -1,3 +1,4 @@
+import { useFolderCtx } from '#/components/media-dialog/body'
 import { DeleteFolder } from '#/components/media-dialog/folder/delete-folder'
 import {
   DropdownMenu,
@@ -18,12 +19,17 @@ export const FolderCard = ({
 }) => {
   const [menuOpen, setMenuOpen] = useState(false)
 
+  const { navigateToFolder } = useFolderCtx()
+
   const card = (
     <button
       type="button"
       onContextMenu={(e) => {
         e.preventDefault()
         setMenuOpen(true)
+      }}
+      onDoubleClick={() => {
+        navigateToFolder({ id: folder.id, name: folder.name })
       }}
       className="hover:border-primary focus:border-primary flex w-28 flex-col items-center gap-2 rounded-xl border p-4 transition-colors duration-200 focus:outline-none"
     >

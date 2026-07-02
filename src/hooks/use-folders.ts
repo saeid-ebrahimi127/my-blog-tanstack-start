@@ -1,5 +1,5 @@
 import { getFolders } from '#/serverfn/folder'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useServerFn } from '@tanstack/react-start'
 
 export const foldersQueryKeyPrefix = 'folders'
@@ -24,5 +24,6 @@ export const useFolders = ({
     staleTime: Infinity,
     refetchOnMount: true,
     throwOnError: true,
+    placeholderData: keepPreviousData,
   })
 }

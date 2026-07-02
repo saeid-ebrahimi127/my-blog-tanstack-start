@@ -10,11 +10,11 @@ import { Loader2Icon, TrashIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
 export const DeleteFolder = ({ folderId }: { folderId: string }) => {
-  const { parentFolderId } = useFolderCtx()
-
   const deleteFolderFn = useServerFn(deleteFolder)
 
   const queryClient = useQueryClient()
+
+  const { parentFolderId, setPath, path } = useFolderCtx()
 
   const deleteFolderMutation = useMutation({
     mutationFn: (data: { folderId: string }) => deleteFolderFn({ data }),
@@ -24,6 +24,16 @@ export const DeleteFolder = ({ folderId }: { folderId: string }) => {
 
         return
       }
+
+      const deletedIndex = path.findIndex((crumb) => crumb.id === folderId)
+      if (deletedIndex !== -1) {
+        setPath((prev) => prev.slice(0, deletedIndex))
+      }
+
+      queryClient.removeQueries({
+        queryKey: [foldersQueryKeyPrefix, { parentFolderId: folderId }],
+        exact: true,
+      })
 
       return queryClient.invalidateQueries({
         queryKey: [foldersQueryKeyPrefix, { parentFolderId }],
