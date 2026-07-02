@@ -12,8 +12,8 @@ import {
 } from '#/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '#/components/ui/tabs'
 import { ImageIcon, MousePointerClickIcon, XIcon } from 'lucide-react'
-import { createContext, use, useState } from 'react'
 import type { Dispatch, ReactNode, SetStateAction } from 'react'
+import { createContext, use, useState } from 'react'
 
 export const MediaDialog = () => {
   const [open, setOpen] = useState(false)
