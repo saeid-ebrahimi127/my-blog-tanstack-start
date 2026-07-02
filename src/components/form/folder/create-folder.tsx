@@ -66,6 +66,7 @@ export const CreateFolderForm = () => {
             autoComplete: 'on',
             placeholder: 'نام پوشه ی جدید + Enter',
             disabled: createFolderMutation.isPending,
+            className: 'text-xs sm:text-sm',
           }}
         />
       </div>

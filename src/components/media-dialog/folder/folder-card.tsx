@@ -4,10 +4,11 @@ import { UpdateFolder } from '#/components/media-dialog/folder/update-folder'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from '#/components/ui/dropdown-menu'
 import type { Folder } from '#/serverfn/folder'
-import { FolderIcon } from 'lucide-react'
+import { FolderIcon, FolderOpenIcon } from 'lucide-react'
 import { useState } from 'react'
 
 export const FolderCard = ({
@@ -52,6 +53,15 @@ export const FolderCard = ({
           side="left"
           className="min-w-fit *:text-xs"
         >
+          <DropdownMenuItem
+            onSelect={(e) => {
+              e.preventDefault()
+              navigateToFolder({ id: folder.id, name: folder.name })
+            }}
+          >
+            <FolderOpenIcon />
+            باز کردن
+          </DropdownMenuItem>
           <UpdateFolder folder={folder} />
           <DeleteFolder folderId={folder.id} />
         </DropdownMenuContent>

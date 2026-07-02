@@ -17,11 +17,11 @@ const Folders = () => {
   return (
     <FolderProvider>
       <CreateFolderForm />
+      <FolderBreadcrumbs />
       <ReactQueryErrorBoundary
         errorMessage="خطا در دریافت پوشه ها!"
         textSize="text-xs"
       >
-        <FolderBreadcrumbs />
         <FolderList />
       </ReactQueryErrorBoundary>
     </FolderProvider>
