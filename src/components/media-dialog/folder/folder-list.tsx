@@ -8,6 +8,7 @@ import {
   TooltipTrigger,
 } from '#/components/ui/tooltip'
 import { useFolders } from '#/hooks/use-folders'
+import { cn } from '#/lib/utils'
 import { Loader2Icon, RefreshCwIcon } from 'lucide-react'
 
 export const FolderList = () => {
@@ -17,7 +18,7 @@ export const FolderList = () => {
     isPending,
     isError,
     data: folders,
-    isRefetching,
+    isFetching: foldersFetching,
     refetch,
   } = useFolders({ path: pathIds })
 
@@ -31,13 +32,13 @@ export const FolderList = () => {
         <TooltipTrigger asChild>
           <Button
             type="button"
-            disabled={isRefetching}
+            disabled={foldersFetching}
             onClick={() => {
               refetch()
             }}
             size="icon"
           >
-            {isRefetching ? (
+            {foldersFetching ? (
               <Loader2Icon className="animate-spin" />
             ) : (
               <RefreshCwIcon />
@@ -46,23 +47,29 @@ export const FolderList = () => {
         </TooltipTrigger>
         <TooltipContent>بروزرسانی</TooltipContent>
       </Tooltip>
-      {folders.length > 0 ? (
-        <div className="flex flex-wrap gap-4">
-          {folders.map((folder) => {
-            return (
-              <FolderCard
-                foldersRefetching={isRefetching}
-                key={folder.id}
-                folder={folder}
-              />
-            )
-          })}
-        </div>
-      ) : (
-        <p className="text-muted-foreground text-xs italic">
-          هیچ پوشه ای یافت نشد.
-        </p>
-      )}
+      <div
+        className={cn({
+          'opacity-50': foldersFetching,
+        })}
+      >
+        {folders.length > 0 ? (
+          <div className="flex flex-wrap gap-4">
+            {folders.map((folder) => {
+              return (
+                <FolderCard
+                  foldersFetching={foldersFetching}
+                  key={folder.id}
+                  folder={folder}
+                />
+              )
+            })}
+          </div>
+        ) : (
+          <p className="text-muted-foreground text-xs italic">
+            هیچ پوشه ای یافت نشد.
+          </p>
+        )}
+      </div>
     </div>
   )
 }

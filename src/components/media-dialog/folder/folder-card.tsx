@@ -7,16 +7,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '#/components/ui/dropdown-menu'
+import { cn } from '#/lib/utils'
 import type { Folder } from '#/serverfn/folder'
 import { FolderIcon, FolderOpenIcon } from 'lucide-react'
 import { useState } from 'react'
 
 export const FolderCard = ({
   folder,
-  foldersRefetching,
+  foldersFetching,
 }: {
   folder: Folder
-  foldersRefetching: boolean
+  foldersFetching: boolean
 }) => {
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -25,14 +26,23 @@ export const FolderCard = ({
   const card = (
     <button
       type="button"
+      disabled={foldersFetching}
       onContextMenu={(e) => {
         e.preventDefault()
+
+        if (foldersFetching) return
+
         setMenuOpen(true)
       }}
       onDoubleClick={() => {
+        if (foldersFetching) return
+
         navigateToFolder({ id: folder.id, name: folder.name })
       }}
-      className="hover:border-primary focus:border-primary flex w-28 flex-col items-center gap-2 rounded-xl border p-4 transition-colors duration-200 focus:outline-none"
+      className={cn(
+        'flex w-28 flex-col items-center gap-2 rounded-xl border p-4 transition-colors duration-200 focus:outline-none',
+        { 'focus:border-primary hover:border-primary': !foldersFetching },
+      )}
     >
       <FolderIcon className="size-10 shrink-0 fill-yellow-400 text-yellow-400" />
       <span className="line-clamp-2 w-full px-2 text-center text-xs">
@@ -41,7 +51,7 @@ export const FolderCard = ({
     </button>
   )
 
-  if (foldersRefetching) return card
+  if (foldersFetching) return card
 
   return (
     <div className="relative">
