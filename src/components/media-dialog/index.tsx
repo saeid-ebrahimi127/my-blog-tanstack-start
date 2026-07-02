@@ -11,16 +11,12 @@ import {
   DialogTrigger,
 } from '#/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '#/components/ui/tabs'
-import { ImageIcon, MousePointerClickIcon, XIcon } from 'lucide-react'
+import { ImageIcon, MousePointerClickIcon } from 'lucide-react'
 import type { Dispatch, ReactNode, SetStateAction } from 'react'
 import { createContext, use, useState } from 'react'
 
 export const MediaDialog = () => {
   const [open, setOpen] = useState(false)
-
-  const closeMediaDialog = () => {
-    setOpen(false)
-  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -52,10 +48,6 @@ export const MediaDialog = () => {
           </MediaDialogProvider>
         </div>
         <DialogFooter className="border-t p-4">
-          <Button type="button" onClick={closeMediaDialog} variant="outline">
-            <XIcon />
-            بستن
-          </Button>
           <Button type="button" disabled>
             <MousePointerClickIcon />
             انتخاب فایل
