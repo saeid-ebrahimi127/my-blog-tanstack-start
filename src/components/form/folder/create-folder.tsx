@@ -1,5 +1,5 @@
 import { CustomInputGroup } from '#/components/input/custom-input-group'
-import { useFolderCtx } from '#/components/media-dialog/body'
+import { useMediaDialog } from '#/components/media-dialog'
 import { foldersQueryKeyPrefix } from '#/hooks/use-folders'
 import { errorMessage } from '#/lib/message'
 import { createFolder } from '#/serverfn/folder'
@@ -24,7 +24,7 @@ export const CreateFolderForm = () => {
 
   const { handleSubmit, control } = form
 
-  const { parentFolderId, pathIds } = useFolderCtx()
+  const { parentFolderId, pathIds } = useMediaDialog()
 
   const createFolderFn = useServerFn(createFolder)
 

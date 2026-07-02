@@ -1,5 +1,5 @@
 import { TextInput } from '#/components/input/text'
-import { useFolderCtx } from '#/components/media-dialog/body'
+import { useMediaDialog } from '#/components/media-dialog'
 import { SubmitBtn } from '#/components/submit-btn'
 import { Button } from '#/components/ui/button'
 import {
@@ -84,7 +84,7 @@ const UpdateFolderForm = ({
 
   const queryClient = useQueryClient()
 
-  const { setPath, pathIds } = useFolderCtx()
+  const { setPath, pathIds } = useMediaDialog()
 
   const updateFolderMutation = useMutation({
     mutationFn: (data: { folderId: string; name: string }) =>

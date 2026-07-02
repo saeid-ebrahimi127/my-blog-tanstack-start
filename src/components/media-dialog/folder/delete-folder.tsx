@@ -1,5 +1,5 @@
 import { CustomAlertDialog } from '#/components/custom-alert-dialog'
-import { useFolderCtx } from '#/components/media-dialog/body'
+import { useMediaDialog } from '#/components/media-dialog'
 import { DropdownMenuItem } from '#/components/ui/dropdown-menu'
 import { foldersQueryKeyPrefix } from '#/hooks/use-folders'
 import { errorMessage } from '#/lib/message'
@@ -14,7 +14,7 @@ export const DeleteFolder = ({ folderId }: { folderId: string }) => {
 
   const queryClient = useQueryClient()
 
-  const { pathIds, setPath, path } = useFolderCtx()
+  const { pathIds, setPath, path } = useMediaDialog()
 
   const deleteFolderMutation = useMutation({
     mutationFn: (data: { folderId: string }) => deleteFolderFn({ data }),

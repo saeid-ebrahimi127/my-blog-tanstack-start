@@ -1,4 +1,4 @@
-import { useFolderCtx } from '#/components/media-dialog/body'
+import { useMediaDialog } from '#/components/media-dialog'
 import { FolderCard } from '#/components/media-dialog/folder/folder-card'
 import { FolderListSkeleton } from '#/components/media-dialog/folder/folder-list-skeleton'
 import { Button } from '#/components/ui/button'
@@ -11,7 +11,7 @@ import { useFolders } from '#/hooks/use-folders'
 import { Loader2Icon, RefreshCwIcon } from 'lucide-react'
 
 export const FolderList = () => {
-  const { pathIds } = useFolderCtx()
+  const { pathIds } = useMediaDialog()
 
   const {
     isPending,

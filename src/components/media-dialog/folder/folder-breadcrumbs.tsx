@@ -1,9 +1,9 @@
-import { useFolderCtx } from '#/components/media-dialog/body'
+import { useMediaDialog } from '#/components/media-dialog'
 import { ChevronLeftIcon, HomeIcon } from 'lucide-react'
 import { Fragment } from 'react'
 
 export const FolderBreadcrumbs = () => {
-  const { path, navigateToCrumb } = useFolderCtx()
+  const { path, navigateToCrumb } = useMediaDialog()
 
   if (path.length === 0) return null
 

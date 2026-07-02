@@ -1,4 +1,4 @@
-import { useFolderCtx } from '#/components/media-dialog/body'
+import { useMediaDialog } from '#/components/media-dialog'
 import { DeleteFolder } from '#/components/media-dialog/folder/delete-folder'
 import { UpdateFolder } from '#/components/media-dialog/folder/update-folder'
 import {
@@ -20,7 +20,7 @@ export const FolderCard = ({
 }) => {
   const [menuOpen, setMenuOpen] = useState(false)
 
-  const { navigateToFolder } = useFolderCtx()
+  const { navigateToFolder } = useMediaDialog()
 
   const card = (
     <button
