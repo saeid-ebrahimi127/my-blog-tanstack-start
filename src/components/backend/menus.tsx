@@ -5,7 +5,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '#/components/ui/tooltip'
-import { useIsPathOrDescendent } from '#/hooks/use-is-path-or-descendent'
 import { useLogout } from '#/hooks/use-logout'
 import { cn } from '#/lib/utils'
 import type { NavigateOptions } from '@tanstack/react-router'
@@ -34,17 +33,15 @@ const MenuItem = ({
   text: string
   sidebarOpen: boolean
 }) => {
-  const isPathOrDescendent = useIsPathOrDescendent(to)
-
   const listItem = (
     <li>
       <Link
+        activeProps={{ className: 'bg-primary-foreground text-primary' }}
         to={to}
         className={cn(
           buttonVariants({ variant: 'ghost' }),
           'hover:bg-primary-foreground hover:text-primary size-full py-3',
           {
-            'bg-primary-foreground text-primary': isPathOrDescendent,
             'w-full justify-start rounded-xl': sidebarOpen,
             'rounded-full': !sidebarOpen,
           },
