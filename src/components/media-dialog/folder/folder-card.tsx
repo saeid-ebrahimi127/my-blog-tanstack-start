@@ -1,13 +1,13 @@
 import { useFolderCtx } from '#/components/media-dialog/body'
 import { DeleteFolder } from '#/components/media-dialog/folder/delete-folder'
+import { UpdateFolder } from '#/components/media-dialog/folder/update-folder'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from '#/components/ui/dropdown-menu'
 import type { Folder } from '#/serverfn/folder'
-import { EditIcon, FolderIcon } from 'lucide-react'
+import { FolderIcon } from 'lucide-react'
 import { useState } from 'react'
 
 export const FolderCard = ({
@@ -40,22 +40,22 @@ export const FolderCard = ({
     </button>
   )
 
-  return foldersRefetching ? (
-    card
-  ) : (
-    <DropdownMenu modal={false} open={menuOpen} onOpenChange={setMenuOpen}>
-      <DropdownMenuTrigger asChild>{card}</DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="start"
-        side="left"
-        className="min-w-fit *:text-xs"
-      >
-        <DropdownMenuItem>
-          <EditIcon />
-          ویرایش
-        </DropdownMenuItem>
-        <DeleteFolder folderId={folder.id} />
-      </DropdownMenuContent>
-    </DropdownMenu>
+  if (foldersRefetching) return card
+
+  return (
+    <div className="relative">
+      {card}
+      <DropdownMenu modal={false} open={menuOpen} onOpenChange={setMenuOpen}>
+        <DropdownMenuTrigger className="pointer-events-none absolute inset-0" />
+        <DropdownMenuContent
+          align="start"
+          side="left"
+          className="min-w-fit *:text-xs"
+        >
+          <UpdateFolder folder={folder} />
+          <DeleteFolder folderId={folder.id} />
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   )
 }

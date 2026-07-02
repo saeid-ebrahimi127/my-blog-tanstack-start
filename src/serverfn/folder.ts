@@ -91,4 +91,38 @@ export const deleteFolder = createServerFn({ method: 'POST' })
     },
   )
 
+export const updateFolder = createServerFn({ method: 'POST' })
+  .middleware([requireAuthMiddleware])
+  .validator(
+    z.object({
+      folderId: z.string().uuid(),
+      name: folderNameZodSchema,
+    }),
+  )
+  .handler(
+    async ({
+      context: {
+        user: { id: userId },
+      },
+      data: { folderId, name },
+    }) => {
+      const folder = await db.query.folderTable.findFirst({
+        where: and(
+          eq(folderTable.id, folderId),
+          eq(folderTable.userId, userId),
+        ),
+      })
+
+      if (!folder) return { error: 'پوشه یافت نشد.' }
+
+      const [updatedFolder] = await db
+        .update(folderTable)
+        .set({ name })
+        .where(eq(folderTable.id, folderId))
+        .returning()
+
+      return { error: null, updatedFolder }
+    },
+  )
+
 export type Folder = Awaited<ReturnType<typeof getFolders>>[number]
