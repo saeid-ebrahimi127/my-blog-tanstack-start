@@ -109,7 +109,7 @@ export const PickFiles = () => {
           </p>
           <div className="mt-3 space-y-2">
             <p className="text-xs">فرمت های مجاز:</p>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center" dir="ltr">
               <ReadableFileMimes />
             </div>
           </div>
